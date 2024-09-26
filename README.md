@@ -20,4 +20,3 @@ graph TD
 **Missed improvements**
 
 - Extension on Image types for better usaged of imageloader
-- iOS/MacOS app to test the flow, Integration tests are included.

@@ -4,7 +4,7 @@ import UIKit
 public typealias PlatformImage = UIImage
 #elseif canImport(AppKit)
 import AppKit
-typealias PlatformImage = NSImage
+public typealias PlatformImage = NSImage
 #endif
 
 // MARK: - ImageLoader Protocol
@@ -38,24 +38,26 @@ public final class CachedImageLoader: ImageLoader {
 
     public func loadImage(from url: URL) async throws -> PlatformImage? {
         if let cachedData = await cache.get(url) {
-            return convertToImage(from: cachedData)
+            return await convertToImage(from: cachedData)
         }
 
         let data = try await dataLoader.loadResource(from: url)
 
         await cache.set(data, for: url)
 
-        return convertToImage(from: data)
+        return await convertToImage(from: data)
     }
 }
 
 private extension CachedImageLoader {
-    func convertToImage(from data: Data) -> PlatformImage? {
+    func convertToImage(from data: Data) async -> PlatformImage? {
+        await Task {
 #if canImport(UIKit)
-        return UIImage(data: data)
+            return UIImage(data: data)
 #elseif canImport(AppKit)
-        return NSImage(data: data)
+            return NSImage(data: data)
 #endif
+        }.value
     }
 }
 
