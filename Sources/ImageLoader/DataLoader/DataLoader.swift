@@ -1,7 +1,7 @@
 import Foundation
 
 /// A protocol that defines a mechanism for asynchronously loading data from a given URL.
-protocol DataLoader {
+public protocol DataLoader {
     
     /// Loads the data from the specified URL.
     /// - Parameter url: The URL to load the resource from.

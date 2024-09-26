@@ -20,5 +20,8 @@ let package = Package(
         .testTarget(
             name: "ImageLoaderTests",
             dependencies: ["ImageLoader"]),
+        .testTarget(
+            name: "ImageLoaderIntegrationTests",
+            dependencies: ["ImageLoader"]),
     ]
 )

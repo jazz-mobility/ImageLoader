@@ -1,10 +1,10 @@
 /// Least Recently Used cache eviction policy using a doubly linked list and dictionary for constant time access and look up
-final class LRUEvictionStrategy<Key: Hashable>: CacheEvictionStrategy {
-    private var map: [Key: Node<Key>] = [:]
-    private var head: Node<Key>? // most recently used
-    private var tail: Node<Key>? // least recently used
+final class LRUEvictionStrategy: CacheEvictionStrategy {
+    private var map: [AnyHashable: Node] = [:]
+    private var head: Node? // most recently used
+    private var tail: Node? // least recently used
     
-    func trackAccess(for key: Key) {
+    func trackAccess(for key: AnyHashable) {
         if let node = map[key] {
             remove(node)
             addToFront(node)
@@ -15,11 +15,11 @@ final class LRUEvictionStrategy<Key: Hashable>: CacheEvictionStrategy {
         }
     }
     
-    func keyToEvict() -> Key? {
+    func keyToEvict() -> AnyHashable? {
         tail?.key
     }
     
-    func removeKey(_ key: Key) {
+    func removeKey(_ key: AnyHashable) {
         guard let node = map[key] else { return }
             
         remove(node)
@@ -35,7 +35,7 @@ final class LRUEvictionStrategy<Key: Hashable>: CacheEvictionStrategy {
 
 // MARK: - Private helpers
 private extension LRUEvictionStrategy {
-    func addToFront(_ node: Node<Key>) {
+    func addToFront(_ node: Node) {
         node.next = head
         node.previous = nil
         
@@ -50,7 +50,7 @@ private extension LRUEvictionStrategy {
         }
     }
     
-    func remove(_ node: Node<Key>) {
+    func remove(_ node: Node) {
         let previous = node.previous
         let next = node.next
         
@@ -74,12 +74,12 @@ private extension LRUEvictionStrategy {
 // MARK: - Node
 
 /// A node for doubly linked list
-private class Node<Key: Hashable> {
-    let key: Key
+private class Node {
+    let key: AnyHashable
     var previous: Node?
     var next: Node?
     
-    init(key: Key, previous: Node? = nil, next: Node? = nil) {
+    init(key: AnyHashable, previous: Node? = nil, next: Node? = nil) {
         self.key = key
         self.previous = previous
         self.next = next

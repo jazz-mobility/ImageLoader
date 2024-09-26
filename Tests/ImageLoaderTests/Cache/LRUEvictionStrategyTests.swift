@@ -3,7 +3,7 @@ import XCTest
 
 final class LRUEvictionStrategyTests: XCTestCase {
     func testTrackAccess_addsKeyToCache() async {
-        let sut = LRUEvictionStrategy<String>()
+        let sut = LRUEvictionStrategy()
         
         // Access key1, this inserts the key1
         sut.trackAccess(for: "key1")
@@ -12,7 +12,7 @@ final class LRUEvictionStrategyTests: XCTestCase {
     }
     
     func testTrackAccess_updatesOrder() {
-        let evictionStrategy = LRUEvictionStrategy<String>()
+        let evictionStrategy = LRUEvictionStrategy()
         
         evictionStrategy.trackAccess(for: "key1")
         evictionStrategy.trackAccess(for: "key2")
@@ -29,7 +29,7 @@ final class LRUEvictionStrategyTests: XCTestCase {
     }
     
     func testEvictionPolicy_evictsLeastRecentlyUsedKey() {
-        let evictionStrategy = LRUEvictionStrategy<String>()
+        let evictionStrategy = LRUEvictionStrategy()
         
         evictionStrategy.trackAccess(for: "key1")
         evictionStrategy.trackAccess(for: "key2")
@@ -45,7 +45,7 @@ final class LRUEvictionStrategyTests: XCTestCase {
     }
     
     func testRemoveKey_removesKeyFromCache() {
-        let evictionStrategy = LRUEvictionStrategy<String>()
+        let evictionStrategy = LRUEvictionStrategy()
         
         evictionStrategy.trackAccess(for: "key1")
         evictionStrategy.trackAccess(for: "key2")
@@ -62,7 +62,7 @@ final class LRUEvictionStrategyTests: XCTestCase {
     }
     
     func testRemoveAll_clearsAllKeys() {
-        let evictionStrategy = LRUEvictionStrategy<String>()
+        let evictionStrategy = LRUEvictionStrategy()
         
         evictionStrategy.trackAccess(for: "key1")
         evictionStrategy.trackAccess(for: "key2")
